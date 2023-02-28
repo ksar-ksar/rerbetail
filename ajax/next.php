@@ -13,11 +13,9 @@ include '../inc/conf.php';
 include '../inc/functions.php';
 
 /******************* Début du script *********************/
-if (DEBUG){
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
-}
+
+//Comptage des visiteurs
+visiteur_comptage('ajax_next');
 
 $gare='';
 if (!empty($_GET["arret"])){
@@ -48,11 +46,7 @@ if (empty($direction)){
 }
 
 $answer = prim_retrive ($gare);
-$trains = [];
-if (!empty($answer->Siri->ServiceDelivery->StopMonitoringDelivery[0]->MonitoredStopVisit)){
-	$trains = $answer->Siri->ServiceDelivery->StopMonitoringDelivery[0]->MonitoredStopVisit;
-	$trains_triées = tri_trains ($trains,"STIF:Line::C01743:", $direction, $selected_direction, $quais, $arrets, $selected_arret );
-}
+$trains_triées = tri_trains ($answer,"STIF:Line::C01743:", $direction, $selected_direction, $quais, $arrets, $selected_arret );
 
 $i=0;
 $trains_display=array();
@@ -61,7 +55,7 @@ if (!empty($trains_triées)){
 		$trains_display["data"][$i]["Mission"] = $train["mission"];
 		$trains_display["data"][$i]["Destination"] = $train["destination"];
 		if ($train["quai"] != ''){
-			$trains_display["data"][$i]["Heure de passage"] = "<b>".date("H:i",strtotime($train["heure"]))." | ".$train["quai"]."</b>";
+			$trains_display["data"][$i]["Heure de passage"] = "<b>".date("H:i",strtotime($train["heure"]))." ".$train["quai"]."</b>";
 		}else{
 			$trains_display["data"][$i]["Heure de passage"] = "<b>".date("H:i",strtotime($train["heure"]))."</b>";
 		}

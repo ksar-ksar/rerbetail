@@ -6,11 +6,25 @@
 *		ksar <ksar.ksar@gmail.com>
 ************************************************************************************/
 
+$messages = prim_retrive_messages ();
+$nb_messages = count($messages);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZLXM7S00E"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-2ZLXM7S00E');
+	</script>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,22 +73,15 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Temps de passage -->
-            <li class="nav-item active">
+            <li class="nav-item <?php if ($page_actuelle == 'index') { echo "active";}  ?>">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Temps de passage</span></a>
             </li>
 
-
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Bientôt
-            </div>
-
             <!-- Nav Item - Itinéraire -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
+            <li class="nav-item <?php if ($page_actuelle == 'itineraire') { echo "active";}  ?>">
+                <a class="nav-link" href="itineraire.php">
                     <i class="fas fa-fw fa-route"></i>
                     <span>Itinéraire</span></a>
             </li>
@@ -83,7 +90,7 @@
             <hr class="sidebar-divider">
 			
             <!-- Nav Item - A propos -->
-            <li class="nav-item">
+            <li class="nav-item <?php if ($page_actuelle == 'about') { echo "active";}  ?>">
                 <a class="nav-link" href="about.php">
                     <i class="fas fa-fw fa-question"></i>
                     <span>A propos</span></a>
@@ -118,7 +125,54 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
+						
+						<!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter"><?php echo $nb_messages; ?></span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Liste des Messages
+                                </h6>
+<?php
+foreach ($messages as $message){
+	
+	if ($message->InfoChannelRef->value == "Information"){
+		$icon = "fa-circle-info";
+		$bg = "bg-info";
+	}else if ($message->InfoChannelRef->value == "Perturbation"){
+		$icon = "fa-person-digging";
+		$bg = "bg-warning";
+	}else if ($message->InfoChannelRef->value == "Commercial"){
+		$icon = "fa-cash-register";
+		$bg = "bg-primary";
+	}else{
+		$icon = "fa-comment";
+		$bg = "bg-secondary";
+	}
+?>
+                                <span class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle <?php echo $bg; ?>">
+                                            <i class="fas <?php echo $icon; ?> text-white"></i>
+                                        </div>
+                                    </div>
+                                   <div>
+                                   <?php echo nl2br($message->Content->Message[0]->MessageText->value)."\n"; ?>
+                                    </div>
+                                </span>
+<?php
+}
+?>
+                            </div>
+                        </li>
+						
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->

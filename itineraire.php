@@ -12,36 +12,35 @@ include 'inc/conf.php';
 //On inclus les fonctions
 include 'inc/functions.php';
 
-$page_actuelle = 'index';
+$page_actuelle = 'itineraire';
 
 /******************* Début du script *********************/
 
-$gare='';
-if (!empty($_GET["arret"])){
-	$selected_arret = $_GET["arret"]; 
-	if (array_key_exists($selected_arret,$arrets)){
-		$gare = $arrets[$selected_arret][1];
-		$gare_nom = $arrets[$selected_arret][0];
-	}
-}
-$direction='';
-if (!empty($_GET["direction"])){
-	$selected_direction = $_GET["direction"]; 
-	if ($selected_direction == 'N'){
-		$direction='AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	}else{
-		$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
+if (!empty($_GET["depart"])){
+	$selected_depart = $_GET["depart"]; 
+	if (array_key_exists($selected_depart,$arrets)){
+		$depart = $arrets[$selected_depart][1];
+		$depart_nom = $arrets[$selected_depart][0];
 	}
 }
 
-if (empty($gare)){
-	$gare = 45102;
-	$gare_nom = 'Châtelet-Les Halles';
-	$selected_arret = 17;
+if (!empty($_GET["arrivee"])){
+	$selected_arrivee = $_GET["arrivee"]; 
+	if (array_key_exists($selected_arrivee,$arrets)){
+		$arrivee = $arrets[$selected_arrivee][1];
+		$arrivee_nom = $arrets[$selected_arrivee][0];
+	}
 }
-if (empty($direction)){
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
+
+if (empty($depart)){
+	$depart = 45102;
+	$depart_nom = 'Châtelet-Les Halles';
+	$selected_depart = 17;
+}
+if (empty($arrivee)){
+	$arrivee = 43097;
+	$arrivee_nom = 'Bourg-la-Reine';
+	$selected_arrivee = 27;
 }
 
 //On inclus le header
@@ -53,17 +52,17 @@ include 'inc/header.php';
 							<!-- Selection -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Choix de l'arrêt</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Choix de l'itinéraire</h6>
 								</div>
 								<div class="card-body">
 									<form method="GET">
-										<label for="arret">Arret :</label>
-										<select id="arret" name="arret" class="btn btn-secondary btn-icon-split">
+										<label for="depart">Départ :</label>
+										<select id="depart" name="depart" class="btn btn-secondary btn-icon-split">
 									<?php
 									$i = 1;
 									foreach ($arrets as $arret){
-										if (!empty($selected_arret)){
-											if ($i == $selected_arret){
+										if (!empty($selected_depart)){
+											if ($i == $selected_depart){
 												echo '<option value="'.$i.'" selected>'.$arret[0]."</option>\n";
 											}else{
 												echo '<option value="'.$i.'">'.$arret[0]."</option>\n";
@@ -75,16 +74,23 @@ include 'inc/header.php';
 									}
 									?>
 										</select><br>
-										<label for="direction">Direction :</label>
-										<select id="direction" name="direction" class="btn btn-secondary btn-icon-split">
-											<option value="S" 
+										<label for="arrivee">Arivée :</label>
+										<select id="arrivee" name="arrivee" class="btn btn-secondary btn-icon-split">
 									<?php
-										if ($direction == "ROBINSON-SAINT REMY LES CHEVREUSE"){echo " selected";}
-									?>>ROBINSON-SAINT REMY</option>
-											<option value="N"		
-									<?php
-										if ($direction == "AEROPORT CH.DE GAULLE 2-MITRY CLAYE"){echo " selected";}
-									?>>AEROPORT-MITRY CLAYE</option>
+									$i = 1;
+									foreach ($arrets as $arret){
+										if (!empty($selected_arrivee)){
+											if ($i == $selected_arrivee){
+												echo '<option value="'.$i.'" selected>'.$arret[0]."</option>\n";
+											}else{
+												echo '<option value="'.$i.'">'.$arret[0]."</option>\n";
+											}
+										}else{
+											echo '<option value="'.$i.'">'.$arret[0]."</option>\n";
+										}
+										$i++;
+									}
+									?>
 										</select><br>
 									  <input type="submit" value=" Go " class="btn btn-primary btn-user btn-block" />
 									</form> 
@@ -97,17 +103,19 @@ include 'inc/header.php';
 							<!-- DataTable -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Prochains passages à <?php echo $gare_nom; ?></h6>
+									<h6 class="m-0 font-weight-bold text-primary">Itinéraire de <?php echo $depart_nom; ?> à <?php echo $arrivee_nom; ?></h6>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
 										<table class="table-sm table-striped" id="dataTable" width="100%" cellspacing="0">
 											<thead>
 												<tr>
-													<th>Mission</th>
-													<th>Destination</th>
+													<th>Arrêt</th>
 													<th>Heure</th>
-													<th>Attente</th>
+													<th></th>
+													<th>Suivant</th>
+													<th>Mission</th>
+													<th>Terminus</th>
 												</tr>
 											</thead>
 										</table>

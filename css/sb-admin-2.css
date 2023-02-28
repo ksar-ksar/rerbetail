@@ -1509,6 +1509,14 @@ pre code {
   padding: 0.3rem;
 }
 
+/* AJout RERBetail */
+@media (max-width: 768px) {
+	.table-sm th,
+	.table-sm td {
+	  padding: 0.1rem;
+	}
+}
+
 .table-bordered {
   border: 1px solid #e3e6f0;
 }
@@ -4528,6 +4536,13 @@ input[type="button"].btn-block {
   padding: 1.25rem;
 }
 
+/* AJout RERBetail */
+@media (max-width: 768px) {
+	.card-body {
+	  padding: 0.5rem;
+	}
+}
+
 .card-title {
   margin-bottom: 0.75rem;
 }
@@ -4554,6 +4569,12 @@ input[type="button"].btn-block {
   margin-bottom: 0;
   background-color: #f8f9fc;
   border-bottom: 1px solid #e3e6f0;
+}
+/* AJout RERBetail */
+@media (max-width: 768px) {
+	.card-header {
+	  padding: 0.75rem 0.5rem;
+	}
 }
 
 .card-header:first-child {
@@ -9814,6 +9835,19 @@ a:focus {
 .container-xl {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+/* AJout RERBetail */
+@media (max-width: 768px) {
+	.container,
+	.container-fluid,
+	.container-sm,
+	.container-md,
+	.container-lg,
+	.container-xl {
+	  padding-left: 0.25rem;
+	  padding-right: 0.25rem;
+	}
 }
 
 .scroll-to-top {
