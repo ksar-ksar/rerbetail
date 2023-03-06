@@ -41,11 +41,51 @@ include 'inc/header.php';
 									<li>Faire "la météo du rerb" en comptant le nombre de passage par heure dans une station donnée</li>
 								</ul>
 							</p>		
-							<p class="mb-4">N'hesitez pas à m'envoyer un mail si vous avez des questions / envies : ksar.ksar at gmail.com</p>	
+							<p class="mb-4">N'hesitez pas à m'envoyer un mail si vous avez des questions / envies : contact at rerbetail.fr</p>	
 						</div>
 					</div>
 					
 					<h1 class="h3 mb-2 text-gray-800">Versions</h1>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">V 0.1.0</h6>
+						</div>
+						<div class="card-body">
+							<div class="row no-gutters align-items-center">
+                                 <div class="col mr-2">
+                                     <div class="font-weight-bold text-success text-uppercase mb-1">
+                                        06/03/2023
+									 </div>
+									<p class="mb-4">
+										<ul> 
+											<li>Rajout de la page météo du RER B pour Bourg-la-reine</li>
+											<li>Ajout d'un bouton "Export" sur les listes</li>											
+										</ul>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">V 0.0.5</h6>
+						</div>
+						<div class="card-body">
+							<div class="row no-gutters align-items-center">
+                                 <div class="col mr-2">
+                                     <div class="font-weight-bold text-success text-uppercase mb-1">
+                                        28/02/2023
+									 </div>
+									<p class="mb-4">
+										<ul> 
+											<li>Passage sur le nom de domaine définitif</li>
+											<li>Ajout d'un bouton "recharger" plutot que le rechargement automatique pour dimminuer le nombre de requêtes</li>											
+										</ul>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">V 0.0.4</h6>

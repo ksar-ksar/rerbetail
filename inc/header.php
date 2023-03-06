@@ -63,7 +63,8 @@ $nb_messages = count($messages);
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                <div class="sidebar-brand-icon rotate-n-15">
+                <div class="sidebar-brand-text mx-3">RER</div>
+				<div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-b"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">étail</div>
@@ -84,6 +85,26 @@ $nb_messages = count($messages);
                 <a class="nav-link" href="itineraire.php">
                     <i class="fas fa-fw fa-route"></i>
                     <span>Itinéraire</span></a>
+            </li>
+			
+			<!-- Divider -->
+            <hr class="sidebar-divider">
+			
+			<!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-cloud-sun"></i>
+                    <span>Météo</span>
+                </a>
+                <div id="collapseUtilities" class="collapse<?php if ($page_actuelle == 'meteo') { echo " show";}  ?>" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Arrêts:</h6>
+                        <a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43097)) { echo "active";}  ?>" href="meteo.php?arret=27">Bourg-la-reine</a>
+						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43071)) { echo "active";}  ?>" href="meteo.php?arret=10">Aulnay-Sous-Bois</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->

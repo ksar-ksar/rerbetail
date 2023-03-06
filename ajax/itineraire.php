@@ -14,6 +14,8 @@ include '../inc/functions.php';
 
 /******************* Début du script *********************/
 
+header('Content-Type: application/json');
+
 //Comptage des visiteurs
 visiteur_comptage('ajax_iti');
 

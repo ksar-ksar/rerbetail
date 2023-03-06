@@ -113,7 +113,7 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 								$retour_list[$i]["attente"] = false; 
 							}else{
 								$attente_s = abs($attente_s);
-								if ($attente_s > 59) {
+								if ($attente_s > 29) {
 									$attente_string = "- ";
 								}
 							}
@@ -147,7 +147,7 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 								$retour_list[$i]["attente"] = false; 
 							}else{
 								$attente_s = abs($attente_s);
-								if ($attente_s > 59) {
+								if ($attente_s > 29) {
 									$attente_string = "- ";
 								}
 							}
@@ -266,10 +266,10 @@ function date_compare($a, $b)
 function prim_retrive ($stop_point){
 	global $db;
 	
-	$cache = '../cache/'.$stop_point ;
-	$expire = time() -20 ; // valable 20 secondes
+	$cache = '/var/www/rerb/cache/'.$stop_point ;
+	$expire = time() - 15 ; // valable 15 secondes
 	
-	if(file_exists($cache) && filemtime($cache) > $expire){
+	if(file_exists($cache) && filemtime($cache) >= $expire){
 		
 		$file = file_get_contents($cache);
 	}else{

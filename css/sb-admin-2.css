@@ -2954,6 +2954,12 @@ fieldset:disabled a.btn {
   width: 100%;
 }
 
+/*modif RERBetail*/
+.btn-half-block {
+  display: inline-block;
+  width: 49%;
+}
+
 .btn-block + .btn-block {
   margin-top: 0.5rem;
 }
