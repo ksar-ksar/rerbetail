@@ -183,8 +183,11 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						}else if ($train->MonitoredVehicleJourney->MonitoredCall->DepartureStatus == "delayed"){
 							$retour_list[$i]["attente"] = "Retardé";
 							if (DEBUG) { trigger_error("Train Retardé"); }
+						}else if ($train->MonitoredVehicleJourney->MonitoredCall->DepartureStatus == "noReport"){
+							$retour_list[$i]["attente"] = "Pas de réponse";
+							if (DEBUG) { trigger_error("Train Pas de réponse"); }
 						}else if ($train->MonitoredVehicleJourney->MonitoredCall->DepartureStatus != "onTime"){
-							trigger_error("Nouveau status : ".$train->MonitoredVehicleJourney->MonitoredCall->DepartureStatus);
+							trigger_error("Nouveau status : ".$train->MonitoredVehicleJourney->MonitoredCall->DepartureStatus." : ".print_r($train,true));
 						}
 					}
 					
@@ -301,7 +304,9 @@ function prim_retrive ($stop_point){
 		$trains = $temp->Siri->ServiceDelivery->StopMonitoringDelivery[0]->MonitoredStopVisit;
 	}else{
 		//Houston we get a problem
-		trigger_error ("Erreur de retour PRIM temps reel : ".print_r($temp,true));
+		if (!empty($temp->Siri->ServiceDelivery->StopMonitoringDelivery[0]->ErrorCondition)){
+			trigger_error ("Erreur de retour PRIM temps reel : ".print_r($temp,true));
+		}
 		$trains = [];
 	}
 	
@@ -384,6 +389,7 @@ function visiteur_comptage($page_actuelle) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
+	$ip = substr($db->real_escape_string($ip),0,50);
 	$sql = "INSERT INTO visiteur(ip,page) "; 
 	$sql .= "VALUES ('$ip', '$page_actuelle') ";
 			

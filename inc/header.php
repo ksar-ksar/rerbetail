@@ -10,6 +10,27 @@ $messages = prim_retrive_messages ();
 $nb_messages = count($messages);
 
 
+
+if ($page_actuelle == 'index'){
+	$canonical = "index.php?arret=$selected_arret&direction=$selected_direction";
+    $page_titre = "Prochains passages du RER B gare de $gare_nom";
+}
+
+if ($page_actuelle == 'itineraire'){
+	$canonical = "itineraire.php?depart=$selected_depart&arrivee=$selected_arrivee";
+    $page_titre = "Prochains passages RER B pour l'itinéraire $depart_nom -> $arrivee_nom";
+}
+
+if ($page_actuelle == 'meteo'){
+	$canonical = "meteo.php?arret=$selected_arret";
+    $page_titre = "Historique des passages du RER B pour la gare $gare_nom";
+}
+
+if ($page_actuelle == 'about'){
+	$canonical = "about.php";
+    $page_titre = "A propos du site rerbetail";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -29,7 +50,7 @@ $nb_messages = count($messages);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Permet de connaitre les horraire ddes prochains passage des RER B">
+    <meta name="description" content="Permet de connaitre les horraires des prochains passage du RER B">
     <meta name="author" content="ksar.ksar@gmail.com">
 	
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -37,7 +58,9 @@ $nb_messages = count($messages);
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
 
-    <title>RER Bétail</title>
+	<link rel="canonical" href="https://www.rerbetail.fr/<?php echo $canonical;?>">
+    <title>RER Bétail - <?php echo $page_titre;?></title>
+	
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -101,8 +124,10 @@ $nb_messages = count($messages);
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Arrêts:</h6>
-                        <a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43097)) { echo "active";}  ?>" href="meteo.php?arret=27">Bourg-la-reine</a>
 						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43071)) { echo "active";}  ?>" href="meteo.php?arret=10">Aulnay-Sous-Bois</a>
+						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43833)) { echo "active";}  ?>" href="meteo.php?arret=19">Luxembourg</a>
+                        <a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43097)) { echo "active";}  ?>" href="meteo.php?arret=27">Bourg-la-reine</a>
+
                     </div>
                 </div>
             </li>
@@ -153,7 +178,7 @@ $nb_messages = count($messages);
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter"><?php echo $nb_messages; ?></span>
+                                <?php if ($nb_messages > 0) { echo '<span class="badge badge-danger badge-counter">'.$nb_messages.'</span>'; }?>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -186,6 +211,20 @@ foreach ($messages as $message){
                                     </div>
                                    <div>
                                    <?php echo nl2br($message->Content->Message[0]->MessageText->value)."\n"; ?>
+                                    </div>
+                                </span>
+<?php
+}
+if ($nb_messages == 0){
+?>
+                                <span class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-info">
+                                            <i class="fas fa-circle-info text-white"></i>
+                                        </div>
+                                    </div>
+                                   <div>
+                                   Pas de messages
                                     </div>
                                 </span>
 <?php

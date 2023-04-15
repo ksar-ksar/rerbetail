@@ -28,6 +28,7 @@ if (!empty($_GET["arret"])){
 if (empty($gare)){
 	$gare = 43097;
 	$gare_nom = 'Bourg-la-Reine';
+	$selected_arret = 27;
 }
 
 //On inclus le header
@@ -82,6 +83,7 @@ include 'inc/header.php';
 											<thead>
 												<tr>
 													<th>Heure</th>
+													<th>Prévue</th>
 													<th>Mission</th>
 													<th>Terminus</th>
 												</tr>
@@ -100,6 +102,7 @@ include 'inc/header.php';
 											<thead>
 												<tr>
 													<th>Heure</th>
+													<th>Prévue</th>
 													<th>Mission</th>
 													<th>Terminus</th>
 												</tr>

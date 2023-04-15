@@ -40,6 +40,7 @@ function enregistre_train ($gare, $selected_direction, $mission, $terminus, $qua
 	//On cherche si ça existe
 	$sql = "SELECT * FROM passages ";
 	$sql .= "WHERE train = '$mission' ";
+	$sql .= "AND stop = '$gare' ";
 	$sql .= "AND time ".time_where ();
 	
 	$result = $db->query($sql);
@@ -128,7 +129,7 @@ function statistiques ($gare, $dir, $quality){
 	
 	$une_heure_en_moins = time() - 60 * 60 ;
 	
-	//On cherche si ça existe
+	//On cherche si ça existe dans les trains passés
 	$sql = "SELECT COUNT(train) as nb FROM passages ";
 	$sql .= "WHERE dir = '$dir' ";
 	$sql .= "AND stop = '$gare' ";
@@ -152,6 +153,32 @@ function statistiques ($gare, $dir, $quality){
 		}
 	}else{
 		echo date("Y-m-d H:i:s"). "Statistiques à zéro ???? ".$sql."\n";
+	}
+	
+	//On cherche si ça existe dans les trains passés
+	$sql = "SELECT COUNT(train) as nb FROM passages_prevus ";
+	$sql .= "WHERE dir = '$dir' ";
+	$sql .= "AND stop = '$gare' ";
+	$sql .= "AND time BETWEEN '".date("Y-m-d H:i:s",$une_heure_en_moins)."' AND '".date("Y-m-d H:i:s")."'";
+	
+	$result = $db->query($sql);
+	if($result->num_rows > 0) {
+		echo date("Y-m-d H:i:s"). "Requêtes pour les Statistiques prévues ".$sql."\n";
+		$row = $result->fetch_assoc();
+		//On insert le nombre de train dans la derniére heure 
+		$sql = "INSERT INTO meteo_prevus (gare, dir, nombre, quality) ";
+		$sql .= "VALUES ('$gare', '$dir', '".$row["nb"]."', '1')";
+		
+		if ($db->query($sql) === TRUE) {
+			// ça a marché
+			echo date("Y-m-d H:i:s")."Statistique prévues inseré ".$sql."\n";
+		}else{
+			//On a un probléme a traiter
+			echo date("Y-m-d H:i:s"). "Statistique prévues pas inseré ".$sql." (".$db->errno.") ".$db->error."\n";
+			trigger_error("Erreur d'insertion dans la BD ".$sql." (".$db->errno.") ".$db->error);
+		}
+	}else{
+		echo date("Y-m-d H:i:s"). "Statistiques prévues à zéro ???? ".$sql."\n";
 	}
 }
 
@@ -196,9 +223,14 @@ function recherche_trains($gare, $selected_arret, $direction, $selected_directio
 				//timestamp du train 
 				$difference_train_actuel = strtotime($train["heure"]) - strtotime(date('d-m-Y H:i:s'));
 				
-				//Si le train actuel n'est pas à quai et avec une heure d'arrivée inférieur à 1 minute on l'insert dans temp
-				if (($train["a_quai"] != " A quai") && ($difference_train_actuel < 60) && ($dernier_dans_temp["train"] != $train["mission"])) {
-					insert_dernier ($gare, $selected_direction, $train["mission"], $train["destination"]);
+				//Si le train actuelle est supprimé ou en retard
+				if (($train["attente"] == "Supprimé") || ($train["attente"] == "Retardé")) {
+					supprime_dernier ($gare, $selected_direction);
+				}else{				
+					//Si le train actuel n'est pas à quai et avec une heure d'arrivée inférieur à 1 minute on l'insert dans temp
+					if (($train["a_quai"] != " A quai") && ($difference_train_actuel < 60) && ($dernier_dans_temp["train"] != $train["mission"])) {
+						insert_dernier ($gare, $selected_direction, $train["mission"], $train["destination"]);
+					}
 				}
 			}
 			
@@ -220,6 +252,36 @@ function recherche_trains($gare, $selected_arret, $direction, $selected_directio
 	}
 }
 
+function lance($statistique) {
+	
+	$gares = array (
+		1 => array ( 	0 => 43097,
+						1 => 27),
+		2 => array ( 	0 => 43071,
+						1 => 10),
+		3 => array ( 	0 => 43833,
+						1 => 19));
+						
+	foreach ($gares as $gare_temp){
+		
+		$gare = $gare_temp[0];
+		$selected_arret = $gare_temp[1];
+		//On commence par la partie Nord
+		$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
+		$selected_direction = 'N';
+
+		recherche_trains($gare, $selected_arret, $direction, $selected_direction, $statistique );
+
+		//Ensuite direction sud
+		$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
+		$selected_direction = 'S';
+
+		recherche_trains($gare, $selected_arret, $direction, $selected_direction, $statistique );
+	}
+}
+	
+	
+
 /******************* Début du script *********************/
 
 //On regarde si on est dans un tranche horraire
@@ -228,72 +290,16 @@ $minute = (int) date('i');
 
 if (($heure < 1) || ($heure >= 5) || (($heure == 1) && ($minute < 15))) {
 
-	//Bourg la Reine
-	$gare = 43097;
-	$selected_arret = 27;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 1);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 1);
-
-	//Aulnay
-	$gare = 43071;
-	$selected_arret = 10;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 1);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 1);
-
+	lance(1);
+	
 	//Sleep during x seconds to relaunch the scan at 30s
 	$seconds = (int) date('s');
 	if ($seconds < 20){
 		$seconds = 20 - $seconds;
 		sleep($seconds);
 	}
-
-	//Bourg la Reine
-	$gare = 43097;
-	$selected_arret = 27;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-
-	//Aulnay
-	$gare = 43071;
-	$selected_arret = 10;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
+	
+	lance(0);
 	
 	//Sleep during x seconds to relaunch the scan at 30s
 	$seconds = (int) date('s');
@@ -302,33 +308,5 @@ if (($heure < 1) || ($heure >= 5) || (($heure == 1) && ($minute < 15))) {
 		sleep($seconds);
 	}
 
-	//Bourg la Reine
-	$gare = 43097;
-	$selected_arret = 27;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-	
-	//Aulnay
-	$gare = 43071;
-	$selected_arret = 10;
-	//On commence par la partie Nord
-	$direction = 'AEROPORT CH.DE GAULLE 2-MITRY CLAYE';
-	$selected_direction = 'N';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
-
-	//Ensuite direction sud
-	$direction='ROBINSON-SAINT REMY LES CHEVREUSE';
-	$selected_direction = 'S';
-
-	recherche_trains($gare, $selected_arret, $direction, $selected_direction, 0);
+	lance(0);
 }

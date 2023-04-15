@@ -143,6 +143,7 @@ if ($result = $db->query($sql)) {
 				            extend: 'excel',
 				            text: 'Export',
 				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Export <?php echo $gare_nom; ?> - <?php echo $selected_direction; ?>'
 				        }
 				    ]
 		   		 });
@@ -223,6 +224,7 @@ if ($result = $db->query($sql)) {
 				            extend: 'excel',
 				            text: 'Export',
 				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Export <?php echo $depart_nom; ?> -> <?php echo $arrivee_nom; ?>'
 				        }
 				    ]
 		   		 });
@@ -252,6 +254,7 @@ if ($result = $db->query($sql)) {
 		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=N',
 				columns: [
 			        { data: 'Heure' },
+			        { data: 'Prévue' },
 			        { data: 'Mission' },
 					{ data: 'Terminus' }
 			    ],
@@ -302,6 +305,7 @@ if ($result = $db->query($sql)) {
 				            extend: 'excel',
 				            text: 'Export',
 				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Passages <?php echo $gare_nom ; ?> Nord'
 				        }
 				    ]
 		   		 });
@@ -309,6 +313,7 @@ if ($result = $db->query($sql)) {
 		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=S',
 				columns: [
 			        { data: 'Heure' },
+			        { data: 'Prévue' },
 			        { data: 'Mission' },
 					{ data: 'Terminus' }
 			    ],
@@ -359,6 +364,7 @@ if ($result = $db->query($sql)) {
 				            extend: 'excel',
 				            text: 'Export',
 				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Passages <?php echo $gare_nom ; ?> Sud'
 				        }
 				    ]
 		   		 });

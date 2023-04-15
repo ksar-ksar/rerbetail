@@ -46,7 +46,9 @@ if (!empty($_GET["gare"])){
 		$gare = 43097;
 	}else if ($selected_gare == 43071){
 		$gare = 43071;
-	}else{
+	}else if ($selected_gare == 43833){
+		$gare = 43833;
+	}else {
 		$gare = false;
 	}
 }
@@ -78,26 +80,35 @@ if ($gare != false){
 	//Type de graphique
 	if ($chart == 'table') {
 		//On cherche les données
-		$sql = "SELECT  time as Heure, train as Mission, terminus as Terminus FROM passages ";
-		$sql .= "WHERE dir = '$direction' ";
-		$sql .= "AND stop = '$gare' ";
-		$sql .= "AND time ".time_where ();
-		$sql .= " ORDER BY id";
+		$sql = "SELECT p.time as Heure, t.time as Prevue, p.train as Mission, p.terminus as Terminus ";
+		$sql .= "FROM passages p ";
+		$sql .= "LEFT JOIN passages_prevus t ON p.train = t.train AND p.stop = t.stop ";
+		$sql .= "AND t.time ".time_where ();
+		$sql .= "WHERE p.dir = '$direction' ";
+		$sql .= "AND p.stop = '$gare' ";
+		$sql .= "AND p.time ".time_where ();
+		$sql .= " ORDER BY p.id";
 		
 		//echo "sql : $sql \n";
 		
 		$i=0;
 		$result = $db->query($sql);
 		while ($row = $result->fetch_assoc()) {
-			$data["data"][$i]["Heure"] = date("H:i",strtotime($row["Heure"]));
+			$data["data"][$i]["Heure"] = date("d/m/Y H:i",strtotime($row["Heure"]));
+			if (empty($row["Prevue"])){
+				$data["data"][$i]["Prévue"] = "";
+			}else{
+				$data["data"][$i]["Prévue"] = date("d/m/Y H:i",strtotime($row["Prevue"]));
+			}
 			$data["data"][$i]["Mission"] = $row["Mission"];
 			$data["data"][$i]["Terminus"] = $row["Terminus"];
 			$i++;
 		}
 		if ($i == 0){
 			$data["data"][0]["Heure"]="Pas de train enregistré";
+			$data["data"][0]["Prévue"] = "";
 			$data["data"][0]["Mission"]="";
-			$data["data"][$i]["Terminus"] = "";
+			$data["data"][0]["Terminus"] = "";
 		}
 	}else{
 		//On cherche les données
@@ -120,6 +131,7 @@ if ($gare != false){
 	if ($chart == 'table') {
 		$data["data"][0]["Heure"]="Mauvaise gare sélectionnée";
 		$data["data"][0]["Mission"]="";
+		$data["data"][0]["Terminus"] = "";
 	}
 }
 echo json_encode($data);
