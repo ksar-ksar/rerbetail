@@ -52,11 +52,7 @@ if (empty($direction)){
 }
 
 $answer = prim_retrive ($gare);
-$trains = [];
-if (!empty($answer->Siri->ServiceDelivery->StopMonitoringDelivery[0]->MonitoredStopVisit)){
-	$trains = $answer->Siri->ServiceDelivery->StopMonitoringDelivery[0]->MonitoredStopVisit;
-	$trains_triées = tri_trains ($trains,"STIF:Line::C01743:", $direction, $selected_direction, $quais, $arrets, $selected_arret );
-}
+$trains_triées = tri_trains ($answer,"STIF:Line::C01743:", $direction, $selected_direction, $quais, $arrets, $selected_arret );
 
 $i=0;
 $trains_display=array();

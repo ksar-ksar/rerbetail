@@ -12,7 +12,7 @@
 define('DEBUG', false);
 
 //API key
-define('API_KEY','ssssssssssssssssssssssssssssssssssssssssssssssssssss');
+define('API_KEY','xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 
 // connect to the database
 $db = new mysqli('localhost', "rerb", "rerbetail1", "rerb");

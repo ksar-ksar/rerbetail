@@ -42,6 +42,25 @@ include 'inc/header.php';
 					<h1 class="h3 mb-2 text-gray-800">Versions</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">V 0.2.1</h6>
+						</div>
+						<div class="card-body">
+							<div class="row no-gutters align-items-center">
+                                 <div class="col mr-2">
+                                     <div class="font-weight-bold text-success text-uppercase mb-1">
+                                        19/04/2023
+									 </div>
+									<p class="mb-4">
+										<ul> 
+											Rajout d'un champ "Date" pour la météo.										
+										</ul>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">V 0.2.0</h6>
 						</div>
 						<div class="card-body">

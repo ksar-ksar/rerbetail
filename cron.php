@@ -255,12 +255,18 @@ function recherche_trains($gare, $selected_arret, $direction, $selected_directio
 function lance($statistique) {
 	
 	$gares = array (
-		1 => array ( 	0 => 43097,
+		1 => array ( 	0 => 43097, //Bourg-la-Reine
 						1 => 27),
-		2 => array ( 	0 => 43071,
+		2 => array ( 	0 => 43071, //Aulnay-Sous-Bois
 						1 => 10),
-		3 => array ( 	0 => 43833,
-						1 => 19));
+		3 => array ( 	0 => 43833, //Luxembourg
+						1 => 19),
+		4 => array ( 	0 => 58774, //Massy-Palaiseau
+						1 => 37),				
+		5 => array ( 	0 => 47889, //Saint-Rémy-Lès-Chevreuse
+						1 => 47),					
+		6 => array ( 	0 => 43164, //Mitry-Claye
+						1 => 6));
 						
 	foreach ($gares as $gare_temp){
 		

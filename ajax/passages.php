@@ -15,18 +15,10 @@ include '../inc/functions.php';
 /******************* Les fonctions ***********************/
 
 //Retourne le where pour la journée
-function time_where () {
+function time_where ($date) {
 	
-	//on cherche si on est avant 3h du matin ou aprés
-	if (date("G") > 3 ){
-		// On est dans le même jour
-		$debut = mktime(3, 0, 0, date("m") , date("d") , date("Y"));
-		$fin = mktime(2, 59, 59, date("m") , date("d")+1 , date("Y"));
-	}else{
-		// On est le matin
-		$debut = mktime(3, 0, 0, date("m") , date("d")-1 , date("Y"));
-		$fin = mktime(2, 59, 59, date("m") , date("d") , date("Y"));
-	}
+	$debut = mktime(3, 0, 0, date("m", strtotime($date)) , date("d", strtotime($date)) , date("Y", strtotime($date)));
+	$fin = mktime(2, 59, 59, date("m", strtotime($date)) , date("d", strtotime($date))+1 , date("Y", strtotime($date)));
 	$sql = "BETWEEN '".date("Y-m-d H:i:s",$debut)."' AND '".date("Y-m-d H:i:s",$fin)."'";
 	
 	return $sql;
@@ -39,6 +31,14 @@ header('Content-Type: application/json');
 //Comptage des visiteurs
 visiteur_comptage('ajax_next');
 
+$date='';
+if (!empty($_GET["date"])){
+	$date = date('Y-m-d', strtotime($_GET["date"]));
+}else{
+	$date = date('Y-m-d');
+}
+$today = date('Y-m-d');
+
 $gare='';
 if (!empty($_GET["gare"])){
 	$selected_gare = $_GET["gare"]; 
@@ -48,7 +48,13 @@ if (!empty($_GET["gare"])){
 		$gare = 43071;
 	}else if ($selected_gare == 43833){
 		$gare = 43833;
-	}else {
+	}else if ($selected_gare == 58774){
+		$gare = 58774;
+	}else if ($selected_gare == 47889){
+		$gare = 47889;
+	}else if ($selected_gare == 43164){
+		$gare = 43164;
+	}else{
 		$gare = false;
 	}
 }
@@ -83,10 +89,10 @@ if ($gare != false){
 		$sql = "SELECT p.time as Heure, t.time as Prevue, p.train as Mission, p.terminus as Terminus ";
 		$sql .= "FROM passages p ";
 		$sql .= "LEFT JOIN passages_prevus t ON p.train = t.train AND p.stop = t.stop ";
-		$sql .= "AND t.time ".time_where ();
+		$sql .= "AND t.time ".time_where ($date);
 		$sql .= "WHERE p.dir = '$direction' ";
 		$sql .= "AND p.stop = '$gare' ";
-		$sql .= "AND p.time ".time_where ();
+		$sql .= "AND p.time ".time_where ($date);
 		$sql .= " ORDER BY p.id";
 		
 		//echo "sql : $sql \n";
@@ -115,7 +121,7 @@ if ($gare != false){
 		$sql = "SELECT  time as date, nombre as value, quality FROM meteo ";
 		$sql .= "WHERE dir = '$direction' ";
 		$sql .= "AND gare = '$gare' ";
-		$sql .= "AND time ".time_where ();
+		$sql .= "AND time ".time_where ($date);
 		$sql .= " ORDER BY id ASC";
 		//echo "sql : $sql \n";
 		$result = $db->query($sql);
@@ -124,6 +130,20 @@ if ($gare != false){
 			$data[$i]["date"] = date("H:i",strtotime($row["date"]));
 			$data[$i]["value"] = $row["value"];
 			$data[$i]["color"] = $row["quality"];
+			$i++;
+		}
+		//On cherche les données prévisionelles
+		$sql = "SELECT  time as date, nombre as value FROM meteo_prevus ";
+		$sql .= "WHERE dir = '$direction' ";
+		$sql .= "AND gare = '$gare' ";
+		$sql .= "AND time ".time_where ($date);
+		$sql .= " ORDER BY id ASC";
+		//echo "sql : $sql \n";
+		$result = $db->query($sql);
+		while ($row = $result->fetch_assoc()) {
+			$data[$i]["date"] = date("H:i",strtotime($row["date"]));
+			$data[$i]["value"] = $row["value"];
+			$data[$i]["color"] = 2;
 			$i++;
 		}
 	}

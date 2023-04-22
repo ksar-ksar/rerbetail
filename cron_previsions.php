@@ -4,6 +4,8 @@
 *
 *		ksar <ksar.ksar@gmail.com>
 ************************************************************************************/
+if(isset($_SERVER['REMOTE_ADDR']))die('Permission denied.');
+
 $time_start = microtime(true);
 
 //if(isset($_SERVER['REMOTE_ADDR']))die('Permission denied.');
@@ -29,9 +31,12 @@ $tomorow_day = date("N", strtotime('tomorrow'));
 echo date("Y-m-d H:i:s"). " Demain est un $tomorow_day\n";
 
 //Les gares 
-$gares_clean = array ('43097', //Aulnay
-					'43071', //Bourg-la-reine
-					'43833'); //Luxembourg
+$gares_clean = array ('43097', //Bourg-la-Reine
+					'43071', //Aulnay-Sous-Bois
+					'43833', //Luxembourg
+					'58774', //Massy-Palaiseau
+					'47889', //Saint-Rémy-Lès-Chevreuse
+					'43164'); //Mitry-Claye
 
 /******************* Les fonctions ***********************/
 

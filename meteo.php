@@ -16,6 +16,14 @@ $page_actuelle = 'meteo';
 
 /******************* Début du script *********************/
 
+$date='';
+if (!empty($_GET["date"])){
+	$date = date('Y-m-d', strtotime($_GET["date"]));
+}else{
+	$date = date('Y-m-d');
+}
+$today = date('Y-m-d');
+
 $gare='';
 if (!empty($_GET["arret"])){
 	$selected_arret = $_GET["arret"]; 
@@ -37,11 +45,41 @@ include 'inc/header.php';
 ?>
 					<!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Météo du RER B à <?php echo $gare_nom; ?> </h1>
-                    <p class="mb-4">La météo du RERB donne les passages entregistrer à un arret donné pour la journée considérée.</p>
-					<p class="mb-4">Attention, ces données ne peuvent pas être considére comme fiable à 100%, c'est un reconstitutions sur la base des données récupérés, toutes les 20 secondes, sur la plate forme PRIM</p>
+                    <p class="mb-4">La météo du RER B donne les passages entregistrés et prévus à un arret donné pour la journée considérée.<br />
+					Attention, ces données ne peuvent pas être considérées comme fiable à 100%, c'est un reconstitutions sur la base des données récupérés, toutes les 20 secondes, sur la plate forme PRIM</p>
 
                     <!-- Content Row -->
                     <div class="row">
+						<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-primary shadow h-100 py-2">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+													Sélectionner une date</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800">
+													<form method="GET">													
+														<input
+														  type="date"
+														  name="date"
+														  min="2023-04-12"
+														  max="<?php echo $today; ?>"
+														  required pattern="\d{4}-\d{2}-\d{2}"
+														  class="btn btn-info btn-icon-split"
+														  value="<?php echo $date; ?>"/>
+														<input type="submit" value=" Go " class="btn btn-primary btn-user btn-block" />
+													</form> 
+												</div>
+											</div>
+											<div class="col-auto">
+												<i class="fas fa-calendar fa-2x text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-6">
 							<!-- Area Chart -->
                             <div class="card shadow mb-4">

@@ -31,6 +31,11 @@ if ($page_actuelle == 'about'){
     $page_titre = "A propos du site rerbetail";
 }
 
+if ($page_actuelle == 'export'){
+	$canonical = "export.php";
+    $page_titre = "Export des données du site rerbetail";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -124,9 +129,12 @@ if ($page_actuelle == 'about'){
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Arrêts:</h6>
+						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43164)) { echo "active";}  ?>" href="meteo.php?arret=6">Mitry-Claye</a>
 						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43071)) { echo "active";}  ?>" href="meteo.php?arret=10">Aulnay-Sous-Bois</a>
 						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43833)) { echo "active";}  ?>" href="meteo.php?arret=19">Luxembourg</a>
                         <a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 43097)) { echo "active";}  ?>" href="meteo.php?arret=27">Bourg-la-reine</a>
+						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 58774)) { echo "active";}  ?>" href="meteo.php?arret=37">Massy-Palaiseau</a>
+						<a class="collapse-item <?php if (($page_actuelle == 'meteo') && ($gare == 47889)) { echo "active";}  ?>" href="meteo.php?arret=47">Saint-Rémy-Lès-Chevreuse</a>
 
                     </div>
                 </div>

@@ -48,7 +48,9 @@ if (empty($direction)){
 include 'inc/header.php';
 
 ?>
-                    <div class="row">
+                    <h1 class="h3 mb-2 text-gray-800">Prochains passages du RER B</h1>
+                    <p class="mb-4">Selectionner une gare, la direction et découvrez les prochains passsages du RER B</p>
+					<div class="row">
 						<div class="col-lg-6">
 							<!-- Selection -->
 							<div class="card shadow mb-4">

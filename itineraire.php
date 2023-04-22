@@ -47,7 +47,9 @@ if (empty($arrivee)){
 include 'inc/header.php';
 
 ?>
-                    <div class="row">
+                    <h1 class="h3 mb-2 text-gray-800">Prochains passages sur votre itinéraire du RER B</h1>
+                    <p class="mb-4">Selectionnez une gare de départ et une gare d'arrivée pour découvrir les trains sur votre trajet.</p>
+					<div class="row">
 						<div class="col-lg-6">
 							<!-- Selection -->
 							<div class="card shadow mb-4">

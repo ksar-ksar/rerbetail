@@ -53,10 +53,10 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						if ($gare_trouvée == false){
 							trigger_error("direction NOK (SNCF) : Gare pas trouvée ".$train->MonitoredVehicleJourney->DestinationName[0]->value);
 						}else{
-							if (($gare_trouvée[0] > $selected_arret) && ($selected_direction == 'S')){
+							if (($gare_trouvée[0] >= $selected_arret) && ($selected_direction == 'S')){
 								$train_ok = true ;
 								if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée et au sud"); }
-							}else if (($gare_trouvée[0] < $selected_arret) && ($selected_direction == 'N')){
+							}else if (($gare_trouvée[0] <= $selected_arret) && ($selected_direction == 'N')){
 								$train_ok = true ;
 								if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée et au Nord"); }
 							}else {
@@ -68,7 +68,9 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 					}
 				}
 				
-				if ((empty($train->MonitoredVehicleJourney->MonitoredCall->ExpectedDepartureTime)) && (empty($train->MonitoredVehicleJourney->MonitoredCall->AimedDepartureTime))){
+				if ((empty($train->MonitoredVehicleJourney->MonitoredCall->ExpectedDepartureTime)) 
+					&& (empty($train->MonitoredVehicleJourney->MonitoredCall->AimedDepartureTime))
+					&& (empty($train->MonitoredVehicleJourney->MonitoredCall->ExpectedArrivalTime))){
 					$train_ok = false ;
 					if (DEBUG) { trigger_error("Pas d'heure de départ trouvé ".print_r($train,true)); }
 				}
@@ -169,6 +171,41 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						$retour_list[$i]["attente"] = $attente_string;
 						if (DEBUG) { trigger_error("Heure OK (AimedDepartureTime) : ".$retour_list[$i]["heure"]); }
 						if (DEBUG) { trigger_error("Attente OK : ".$retour_list[$i]["attente"]." / ".strtotime(date('d-m-Y H:i:s'))." / ".strtotime($train->MonitoredVehicleJourney->MonitoredCall->AimedDepartureTime)); }
+					}else if (!empty($train->MonitoredVehicleJourney->MonitoredCall->ExpectedArrivalTime)){
+						//C'est un train qui arrive à destination
+						$retour_list[$i]["heure"] = date('d-m-Y H:i:s', strtotime($train->MonitoredVehicleJourney->MonitoredCall->ExpectedArrivalTime));
+						$attente_s = strtotime($train->MonitoredVehicleJourney->MonitoredCall->ExpectedArrivalTime) - strtotime(date('d-m-Y H:i:s'));
+						$attente_string = "";
+						if ($attente_s < 0){
+							// Si supperieur à 5 minutes de retard on vire le train
+							if ($attente_s < -300) {
+								if (DEBUG) { echo "Train trop en retard, viré de la liste \n"; }
+								$retour_list[$i]["heure"] = false;
+								$retour_list[$i]["attente"] = false; 
+							}else{
+								$attente_s = abs($attente_s);
+								if ($attente_s > 29) {
+									$attente_string = "- ";
+								}
+							}
+						}
+						if ($attente_s > 60*60 ){
+							$attente_s_heure = intval ($attente_s/(60*60));
+							$attente_s = $attente_s - $attente_s_heure*60*60;
+							$attente_string .= $attente_s_heure."h ";
+						}
+						/*
+						if ($attente_s > 60 ){
+							$attente_s_min = intval ($attente_s/60);
+							$attente_s = $attente_s - $attente_s_min*60;
+							$attente_string .= $attente_s_min."m ";
+						}
+						$attente_string .= $attente_s."s"; */
+						$attente_string .= round($attente_s/60)."m ";
+						
+						$retour_list[$i]["attente"] = $attente_string;
+						if (DEBUG) { trigger_error("Heure OK : ".$retour_list[$i]["heure"]); }
+						if (DEBUG) { trigger_error("Attente OK : ".$retour_list[$i]["attente"]." / ".strtotime(date('d-m-Y H:i:s'))." / ".strtotime($train->MonitoredVehicleJourney->MonitoredCall->ExpectedDepartureTime)); }
 					}else{	
 						//On a rien trouvé comme heure, train a supprimer.
 						$retour_list[$i]["heure"] = false;

@@ -251,7 +251,7 @@ if ($result = $db->query($sql)) {
     <script>
 		// Call the dataTables jQuery plugin
 		  var table = $('#TableNord').DataTable({
-		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=N',
+		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=N&date=<?php echo $date; ?>',
 				columns: [
 			        { data: 'Heure' },
 			        { data: 'Prévue' },
@@ -310,7 +310,7 @@ if ($result = $db->query($sql)) {
 				    ]
 		   		 });
 		var table = $('#TableSud').DataTable({
-		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=S',
+		        ajax: 'ajax/passages.php?chart=table&gare=<?php echo $gare; ?>&direction=S&date=<?php echo $date; ?>',
 				columns: [
 			        { data: 'Heure' },
 			        { data: 'Prévue' },
@@ -380,19 +380,24 @@ if ($result = $db->query($sql)) {
 			
 			const showGraph = () => {
             {
-                $.get("ajax/passages.php?chart=curve&gare=<?php echo $gare; ?>&direction=N",function (data)
+                $.get("ajax/passages.php?chart=curve&gare=<?php echo $gare; ?>&direction=N&date=<?php echo $date; ?>",function (data)
                 {
                     var date = [];
                     var value = [];
+					var valuep = [];
 					var pointcolorget = [];
 
                     for (var i in data) {
-                        date.push(data[i].date);
-                        value.push(data[i].value);
-						if (data[i].color == 1){
+						if (data[i].color == 2){
+							valuep.push(data[i].value);
+						}else if (data[i].color == 1){
 							pointcolorget.push("rgba(78, 115, 223, 1)");
+							date.push(data[i].date);
+							value.push(data[i].value);
 						}else{
 							pointcolorget.push("rgba(209, 212, 223, 1)");
+							date.push(data[i].date);
+							value.push(data[i].value);
 						}
                     }
 
@@ -412,6 +417,21 @@ if ($result = $db->query($sql)) {
 							  pointBorderWidth: 0,
                               data: value,
 							  pointBackgroundColor: pointcolorget
+                            },
+							{
+                              label: 'Passages Prévus Direction Nord',
+							  lineTension: 0.3,
+							  backgroundColor: "rgba(250, 115, 223, 0.05)",
+							  borderColor: "rgba(250, 115, 223, 1)",
+							  pointRadius: 0,
+							  pointBorderColor: "rgba(250, 115, 223, 1)",
+							  pointHoverRadius: 3,
+							  pointHoverBackgroundColor: "rgba(250, 115, 223, 1)",
+							  pointHoverBorderColor: "rgba(250, 115, 223, 1)",
+							  pointHitRadius: 10,
+							  pointBorderWidth: 0,
+                              data: valuep,
+							  pointBackgroundColor: "rgba(250, 115, 223, 1)"
                             }]
 
                     };
@@ -486,19 +506,24 @@ if ($result = $db->query($sql)) {
 		
 		const showGraph2 = () => {
             {
-                $.get("ajax/passages.php?chart=curve&gare=<?php echo $gare; ?>&direction=S",function (data2)
+                $.get("ajax/passages.php?chart=curve&gare=<?php echo $gare; ?>&direction=S&date=<?php echo $date; ?>",function (data2)
                 {
                     var date2 = [];
                     var value2 = [];
+					var valuep2 = [];
 					var pointcolorget2 = [];
 
                     for (var i in data2) {
-                        date2.push(data2[i].date);
-                        value2.push(data2[i].value);
-						if (data2[i].color == 1){
+						if (data2[i].color == 2){
+							valuep2.push(data2[i].value);
+						}else if (data2[i].color == 1){
 							pointcolorget2.push("rgba(78, 115, 223, 1)");
+							date2.push(data2[i].date);
+							value2.push(data2[i].value);
 						}else{
 							pointcolorget2.push("rgba(209, 212, 223, 1)");
+							date2.push(data2[i].date);
+							value2.push(data2[i].value);
 						}
                     }
 
@@ -518,6 +543,21 @@ if ($result = $db->query($sql)) {
 							  pointBorderWidth: 0,
                               data: value2,
 							  pointBackgroundColor: pointcolorget2
+                            },
+							{
+                              label: 'Passages Prévus Direction Sud',
+							  lineTension: 0.3,
+							  backgroundColor: "rgba(250, 115, 223, 0.05)",
+							  borderColor: "rgba(250, 115, 223, 1)",
+							  pointRadius: 0,
+							  pointBorderColor: "rgba(250, 115, 223, 1)",
+							  pointHoverRadius: 3,
+							  pointHoverBackgroundColor: "rgba(250, 115, 223, 1)",
+							  pointHoverBorderColor: "rgba(250, 115, 223, 1)",
+							  pointHitRadius: 10,
+							  pointBorderWidth: 0,
+                              data: valuep2,
+							  pointBackgroundColor: "rgba(250, 115, 223, 1)"
                             }]
 
                     };
@@ -588,6 +628,210 @@ if ($result = $db->query($sql)) {
                 });
             }
 		}
+	</script>
+	
+<?php } ?>
+
+<?php if ($page_actuelle == 'export') { ?>
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="vendor/datatables/buttons.bootstrap4.min.js"></script>
+	<script src="vendor/datatables/dataTables.buttons.min.js"></script>
+	<script src="vendor/datatables/buttons.html5.min.js"></script>
+	<script src="vendor/datatables/jszip.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script>
+		// Call the dataTables jQuery plugin
+		  var table = $('#dataTable_prevus').DataTable({
+		        ajax: 'ajax/export.php?type=prevus&date=<?php echo $date; ?>',
+				columns: [
+			        { data: 'Heure' },
+			        { data: 'Direction' },
+			        { data: 'Gare' },
+			        { data: 'Mission' },
+					{ data: 'Terminus' }
+			    ],
+				language: {
+					    "decimal":        ",",
+					    "emptyTable":     "Pas de données disponibles",
+					    "info":           "Affiche de _START_ à _END_ sur _TOTAL_",
+					    "infoEmpty":      "Affiche 0 à 0 sur 0",
+					    "infoFiltered":   "(filtré de _MAX_ entrées totales)",
+					    "infoPostFix":    "",
+					    "thousands":      " ",
+					    "lengthMenu":     "Affiche _MENU_ lignes",
+					    "loadingRecords": "Chargement...",
+					    "processing":     "Recherche des données encours...",
+					    "search":         "Recherche:",
+					    "zeroRecords":    "Pas d'entrée trouvée",
+					    "paginate": {
+					        "first":      "Premier",
+					        "last":       "Dernier",
+					        "next":       "Suivant",
+					        "previous":   "Précédent"
+					    },
+					    "aria": {
+					        "sortAscending":  ": activate to sort column ascending",
+					        "sortDescending": ": activate to sort column descending"
+					    }
+					},
+				processing: true,
+				info: false,
+				scrollX: false,
+				columnDefs: [
+					{"className": "compact row-border dt-center", "targets": "_all"}
+				  ],
+				dom: 'B<"clear">frtip',
+				buttons: [
+				        {
+				            text: 'Rafraichir',
+							className: 'btn btn-success btn-user btn-half-block',
+				            action: function ( e, dt, node, config ) {
+				                dt.ajax.reload();
+				            }
+				        },
+						{
+				            extend: 'excel',
+				            text: 'Export',
+				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Export prévus - <?php echo $date; ?>'
+				        }
+				    ]
+		   		 });
+		
+		/*setInterval( function () {
+		    table.ajax.reload( null, false ); // user paging is not reset on reload
+		}, 20000 );*/
+	</script>
+	<script>
+		// Call the dataTables jQuery plugin
+		  var table = $('#dataTable_enreg').DataTable({
+		        ajax: 'ajax/export.php?type=enreg&date=<?php echo $date; ?>',
+				columns: [
+			        { data: 'Heure' },
+			        { data: 'Direction' },
+			        { data: 'Gare' },
+			        { data: 'Mission' },
+					{ data: 'Terminus' }
+			    ],
+				language: {
+					    "decimal":        ",",
+					    "emptyTable":     "Pas de données disponibles",
+					    "info":           "Affiche de _START_ à _END_ sur _TOTAL_",
+					    "infoEmpty":      "Affiche 0 à 0 sur 0",
+					    "infoFiltered":   "(filtré de _MAX_ entrées totales)",
+					    "infoPostFix":    "",
+					    "thousands":      " ",
+					    "lengthMenu":     "Affiche _MENU_ lignes",
+					    "loadingRecords": "Chargement...",
+					    "processing":     "Recherche des données encours...",
+					    "search":         "Recherche:",
+					    "zeroRecords":    "Pas d'entrée trouvée",
+					    "paginate": {
+					        "first":      "Premier",
+					        "last":       "Dernier",
+					        "next":       "Suivant",
+					        "previous":   "Précédent"
+					    },
+					    "aria": {
+					        "sortAscending":  ": activate to sort column ascending",
+					        "sortDescending": ": activate to sort column descending"
+					    }
+					},
+				processing: true,
+				info: false,
+				scrollX: false,
+				columnDefs: [
+					{"className": "compact row-border dt-center", "targets": "_all"}
+				  ],
+				dom: 'B<"clear">frtip',
+				buttons: [
+				        {
+				            text: 'Rafraichir',
+							className: 'btn btn-success btn-user btn-half-block',
+				            action: function ( e, dt, node, config ) {
+				                dt.ajax.reload();
+				            }
+				        },
+						{
+				            extend: 'excel',
+				            text: 'Export',
+				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Export prévus - <?php echo $date; ?>'
+				        }
+				    ]
+		   		 });
+		
+		/*setInterval( function () {
+		    table.ajax.reload( null, false ); // user paging is not reset on reload
+		}, 20000 );*/
+	</script>
+	<script>
+		// Call the dataTables jQuery plugin
+		  var table = $('#dataTable_cons').DataTable({
+		        ajax: 'ajax/export.php?type=cons&date=<?php echo $date; ?>',
+				columns: [
+			        { data: 'Heure' },
+					{ data: 'Passage' },
+					{ data: 'Prevue' },
+			        { data: 'Direction' },
+			        { data: 'Gare' },
+			        { data: 'Mission' },
+					{ data: 'Terminus' }
+			    ],
+				language: {
+					    "decimal":        ",",
+					    "emptyTable":     "Pas de données disponibles",
+					    "info":           "Affiche de _START_ à _END_ sur _TOTAL_",
+					    "infoEmpty":      "Affiche 0 à 0 sur 0",
+					    "infoFiltered":   "(filtré de _MAX_ entrées totales)",
+					    "infoPostFix":    "",
+					    "thousands":      " ",
+					    "lengthMenu":     "Affiche _MENU_ lignes",
+					    "loadingRecords": "Chargement...",
+					    "processing":     "Recherche des données encours...",
+					    "search":         "Recherche:",
+					    "zeroRecords":    "Pas d'entrée trouvée",
+					    "paginate": {
+					        "first":      "Premier",
+					        "last":       "Dernier",
+					        "next":       "Suivant",
+					        "previous":   "Précédent"
+					    },
+					    "aria": {
+					        "sortAscending":  ": activate to sort column ascending",
+					        "sortDescending": ": activate to sort column descending"
+					    }
+					},
+				processing: true,
+				info: false,
+				scrollX: false,
+				columnDefs: [
+					{"className": "compact row-border dt-center", "targets": "_all"}
+				  ],
+				dom: 'B<"clear">frtip',
+				buttons: [
+				        {
+				            text: 'Rafraichir',
+							className: 'btn btn-success btn-user btn-half-block',
+				            action: function ( e, dt, node, config ) {
+				                dt.ajax.reload();
+				            }
+				        },
+						{
+				            extend: 'excel',
+				            text: 'Export',
+				            className: 'btn btn-info btn-user btn-half-block',
+							title: 'Export prévus - <?php echo $date; ?>'
+				        }
+				    ]
+		   		 });
+		
+		/*setInterval( function () {
+		    table.ajax.reload( null, false ); // user paging is not reset on reload
+		}, 20000 );*/
 	</script>
 	
 <?php } ?>
