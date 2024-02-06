@@ -54,6 +54,18 @@ if (!empty($_GET["gare"])){
 		$gare = 47889;
 	}else if ($selected_gare == 43164){
 		$gare = 43164;
+	}else if ($selected_gare == 473364){
+		$gare = 473364;
+	}else if ($selected_gare == 43186){
+		$gare = 43186;
+	}else if ($selected_gare == 43086){
+		$gare = 43086;
+	}else if ($selected_gare == 43145){
+		$gare = 43145;
+	}else if ($selected_gare == 473890){
+		$gare = 473890;
+	}else if ($selected_gare == 43607){
+		$gare = 43607;
 	}else{
 		$gare = false;
 	}

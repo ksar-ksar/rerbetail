@@ -6,40 +6,89 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
-
 <url>
-  <loc>http://www.rerbetail.fr/</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/index.php</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/index.php</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/itineraire.php</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/itineraire.php</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/meteo.php?arret=10</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=1</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/meteo.php?arret=19</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=6</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/meteo.php?arret=27</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=10</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://www.rerbetail.fr/about.php</loc>
-  <lastmod>2023-03-15T09:34:05+00:00</lastmod>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=15</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=19</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=21</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=24</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=27</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=30</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=37</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=42</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/meteo.php?arret=47</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/export.php</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.rerbetail.fr/about.php</loc>
+  <lastmod>2024-02-03T22:27:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 

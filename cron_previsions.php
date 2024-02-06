@@ -36,7 +36,13 @@ $gares_clean = array ('43097', //Bourg-la-Reine
 					'43833', //Luxembourg
 					'58774', //Massy-Palaiseau
 					'47889', //Saint-Rémy-Lès-Chevreuse
-					'43164'); //Mitry-Claye
+					'43164', //Mitry-Claye
+					'473364', //Aéroport CDG 2 TGV
+					'43186', //Robinson
+					'43086', //Orsay-Ville
+					'43145', //La Plaine
+					'473890', //Denfert
+					'43607'); //LaPlace 
 
 /******************* Les fonctions ***********************/
 
@@ -170,11 +176,11 @@ if (file_put_contents($temp_dir.$gtfs_file_name, file_get_contents($url_gtfs))){
 									echo date("Y-m-d H:i:s"). " On est dans le bon jour / ".$row[2]."\n";
 
 									//On marque le trip
-									$sql = "UPDATE trips_temp SET cal_dates = '".trim($row[1])."' WHERE service_id = '$service_id'";
+									$sql = "UPDATE trips_temp SET cal_dates = '".trim($row[2])."' WHERE service_id = '$service_id'";
 									if (!$db->query($sql)) {
 										//On a un probléme a traiter
 										echo date("Y-m-d H:i:s"). " Trips pas marqué à supprimé de trips_temp ".$sql." (".$db->errno.") ".$db->error."\n";
-										trigger_error("Trips pas marqué à de trips_temp ".$sql." (".$db->errno.") ".$db->error);
+										trigger_error("Trips pas marqué à supprimer de trips_temp ".$sql." (".$db->errno.") ".$db->error);
 									}
 									$i++;
 								}else{
@@ -184,8 +190,8 @@ if (file_put_contents($temp_dir.$gtfs_file_name, file_get_contents($url_gtfs))){
 										$sql = "UPDATE trips_temp SET del_cal = '1' WHERE service_id = '$service_id'";
 										if (!$db->query($sql)) {
 											//On a un probléme a traiter
-											echo date("Y-m-d H:i:s"). " Trips pas marqué à supprimé de trips_temp ".$sql." (".$db->errno.") ".$db->error."\n";
-											trigger_error("Trips pas marqué à de trips_temp ".$sql." (".$db->errno.") ".$db->error);
+											echo date("Y-m-d H:i:s"). " Trips marqué à supprimé de trips_temp ".$sql." (".$db->errno.") ".$db->error."\n";
+											trigger_error("Trips marqué à supprimé de trips_temp ".$sql." (".$db->errno.") ".$db->error);
 										}
 									}
 								}

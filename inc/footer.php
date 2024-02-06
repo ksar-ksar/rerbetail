@@ -680,6 +680,7 @@ if ($result = $db->query($sql)) {
 				processing: true,
 				info: false,
 				scrollX: false,
+				pageLength: 20,
 				columnDefs: [
 					{"className": "compact row-border dt-center", "targets": "_all"}
 				  ],
@@ -743,6 +744,7 @@ if ($result = $db->query($sql)) {
 				processing: true,
 				info: false,
 				scrollX: false,
+				pageLength: 20,
 				columnDefs: [
 					{"className": "compact row-border dt-center", "targets": "_all"}
 				  ],
@@ -808,6 +810,7 @@ if ($result = $db->query($sql)) {
 				processing: true,
 				info: false,
 				scrollX: false,
+				pageLength: 20,
 				columnDefs: [
 					{"className": "compact row-border dt-center", "targets": "_all"}
 				  ],

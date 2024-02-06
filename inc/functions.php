@@ -53,9 +53,12 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						if ($gare_trouvée == false){
 							trigger_error("direction NOK (SNCF) : Gare pas trouvée ".$train->MonitoredVehicleJourney->DestinationName[0]->value);
 						}else{
-							if (($gare_trouvée[0] >= $selected_arret) && ($selected_direction == 'S')){
-								$train_ok = true ;
-								if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée et au sud"); }
+							if (($gare_trouvée[0] >= $selected_arret) && ($selected_direction == 'S') ){
+								if ($gare_trouvée[0] != 1){
+									$train_ok = true ;
+									if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée et au sud"); }
+								}
+								if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée = Aéroport CDG"); }
 							}else if (($gare_trouvée[0] <= $selected_arret) && ($selected_direction == 'N')){
 								$train_ok = true ;
 								if (DEBUG) { trigger_error("direction OK (SNCF) : Gare trouvée et au Nord"); }
@@ -108,8 +111,8 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						$attente_s = strtotime($train->MonitoredVehicleJourney->MonitoredCall->ExpectedDepartureTime) - strtotime(date('d-m-Y H:i:s'));
 						$attente_string = "";
 						if ($attente_s < 0){
-							// Si supperieur à 5 minutes de retard on vire le train
-							if ($attente_s < -300) {
+							// Si supperieur à 3 minutes de retard on vire le train
+							if ($attente_s < -180) {
 								if (DEBUG) { echo "Train trop en retard, viré de la liste \n"; }
 								$retour_list[$i]["heure"] = false;
 								$retour_list[$i]["attente"] = false; 
@@ -142,8 +145,8 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						$attente_s = strtotime($train->MonitoredVehicleJourney->MonitoredCall->AimedDepartureTime) - strtotime(date('d-m-Y H:i:s'));
 						$attente_string = "";
 						if ($attente_s < 0) {
-							// Si supperieur à 5 minutes de retard on vire le train
-							if ($attente_s < -300) {
+							// Si supperieur à 3 minutes de retard on vire le train
+							if ($attente_s < -180) {
 								if (DEBUG) { echo "Train trop en retard, viré de la liste \n"; }
 								$retour_list[$i]["heure"] = false;
 								$retour_list[$i]["attente"] = false; 
@@ -177,8 +180,8 @@ function tri_trains ($trains, $ligne, $direction, $selected_direction, $quais, $
 						$attente_s = strtotime($train->MonitoredVehicleJourney->MonitoredCall->ExpectedArrivalTime) - strtotime(date('d-m-Y H:i:s'));
 						$attente_string = "";
 						if ($attente_s < 0){
-							// Si supperieur à 5 minutes de retard on vire le train
-							if ($attente_s < -300) {
+							// Si supperieur à 3 minutes de retard on vire le train
+							if ($attente_s < -180) {
 								if (DEBUG) { echo "Train trop en retard, viré de la liste \n"; }
 								$retour_list[$i]["heure"] = false;
 								$retour_list[$i]["attente"] = false; 
@@ -389,9 +392,11 @@ function prim_retrive_messages (){
 	if (!empty($temp->Siri->ServiceDelivery->GeneralMessageDelivery[0]->InfoMessage)){
 		$messages = $temp->Siri->ServiceDelivery->GeneralMessageDelivery[0]->InfoMessage;
 		
-	}else{
+	}elseif(empty($temp->Siri->ServiceDelivery->GeneralMessageDelivery[0])){
 		//Houston we get a problem
 		trigger_error ("Erreur de retour PRIM Message : ".print_r($temp,true));
+		$messages = [];
+	}else{
 		$messages = [];
 	}
 	
@@ -450,7 +455,11 @@ function log_error( $num, $str, $file, $line, $context = null )
 function log_exception( Exception $e ){
     global $db;
 	
-	$logfile_dir = $_SERVER['DOCUMENT_ROOT']."/log/";
+	if (!empty($_SERVER['DOCUMENT_ROOT'])){
+		$logfile_dir = $_SERVER['DOCUMENT_ROOT']."/log/";
+	}else{
+		$logfile_dir = "/var/www/rerb/log/";
+	}
     $logfile = $logfile_dir . "php_" . date("y-m-d") . ".log";
     $logfile_delete_days = 30;
 	

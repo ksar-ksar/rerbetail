@@ -104,7 +104,7 @@ include 'inc/header.php';
 					<!-- DataTable Enregistrer -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">Liste des trains consolidé sur la journée</h6>
+							<h6 class="m-0 font-weight-bold text-primary">Liste des trains consolidés sur la journée</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">

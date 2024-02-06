@@ -59,6 +59,7 @@ include 'inc/header.php';
 													Sélectionner une date</div>
 												<div class="h5 mb-0 font-weight-bold text-gray-800">
 													<form method="GET">													
+														<input type="hidden" name="arret" value="<?php echo $selected_arret; ?>" />
 														<input
 														  type="date"
 														  name="date"

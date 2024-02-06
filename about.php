@@ -42,6 +42,26 @@ include 'inc/header.php';
 					<h1 class="h3 mb-2 text-gray-800">Versions</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">V 0.2.2</h6>
+						</div>
+						<div class="card-body">
+							<div class="row no-gutters align-items-center">
+                                 <div class="col mr-2">
+                                     <div class="font-weight-bold text-success text-uppercase mb-1">
+                                        03/02/2024
+									 </div>
+									<p class="mb-4">
+										<ul> 
+											<li>Rajout des gares "La Plaine, Denfert, Laplace" dans le relevé automatique.</li>								
+											<li>Ajout d'indexes dans la base de donnée pour accélerer l'affichage des pages météo.</li>
+										</ul>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">V 0.2.1</h6>
 						</div>
 						<div class="card-body">

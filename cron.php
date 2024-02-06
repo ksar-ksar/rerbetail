@@ -75,7 +75,7 @@ function recherche_dernier ($gare, $selected_direction) {
 	if($result->num_rows > 0) {
 		$row = $result->fetch_assoc();
 		$train = $row;
-		echo date("Y-m-d H:i:s"). "Train ancien trouvé : ".$train["train"]." ".$train["terminus"]."\n";
+		echo date("Y-m-d H:i:s"). "Train ancien trouvé : ".$train["train"]." ".$train["terminus"]." ".$selected_direction."\n";
 	}else{
 		$train = false;
 		echo date("Y-m-d H:i:s"). "Pas de train ancien trouvé ".$sql."\n";
@@ -266,7 +266,19 @@ function lance($statistique) {
 		5 => array ( 	0 => 47889, //Saint-Rémy-Lès-Chevreuse
 						1 => 47),					
 		6 => array ( 	0 => 43164, //Mitry-Claye
-						1 => 6));
+						1 => 6),
+		7 => array ( 	0 => 473364, //Aéroport CDG 2 TGV
+						1 => 1),
+		8 => array ( 	0 => 43186, //Robinson
+						1 => 30),
+		9 => array ( 	0 => 43086, //Orsay-Ville
+						1 => 42),
+		10 => array ( 	0 => 43145, //La Plaine
+						1 => 15),						
+		11 => array ( 	0 => 473890, //Denfert
+						1 => 21),							
+		12 => array ( 	0 => 43607, //Laplace
+						1 => 24));
 						
 	foreach ($gares as $gare_temp){
 		
@@ -294,7 +306,7 @@ function lance($statistique) {
 $heure = (int) date('G');
 $minute = (int) date('i');
 
-if (($heure < 1) || ($heure >= 5) || (($heure == 1) && ($minute < 15))) {
+if (($heure < 1) || ($heure >= 5) || (($heure == 4) && ($minute > 40)) || (($heure == 1) && ($minute < 20))) {
 
 	lance(1);
 	
